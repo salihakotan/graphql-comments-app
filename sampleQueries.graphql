@@ -31,7 +31,7 @@ query getAllPosts{
 }
 
 mutation addUser{
-  createUser(fullname:"Stephen"){
+  createUser(data:{ fullname:"Stephen2"}){
     id,
     fullname,
     comments{text}
@@ -41,7 +41,7 @@ mutation addUser{
 }
 
 mutation addComment{
-  	createComment(text:"Sample comment 2", post_id:"1",user_id:"1"){
+  	createComment(data:{text:"Sample comment 5", post_id:"1",user_id:"1"}){
     id
       text,
       post_id
@@ -50,7 +50,7 @@ mutation addComment{
 }
 
 mutation addPost{
-  createPost(title:"Sample Post for Buket", user_id:"1"){
+  createPost(data:{title:"Sample Post 6 for Buket", user_id:"1"}){
     id,
     title,
     user_id

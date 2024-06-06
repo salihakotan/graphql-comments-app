@@ -16,12 +16,21 @@ const typeDefs = gql`
         comments:[Comment!]!
     }
 
+    input CreateUserInput{
+        fullname:String!
+    }
+
     type Post{
         id:ID!
         title:String!
         user_id:ID!
         user:User!
         comments:[Comment!]!
+    }
+
+    input CreatePostInput{
+        title:String!
+        user_id:ID!
     }
 
     type Comment{
@@ -31,6 +40,12 @@ const typeDefs = gql`
         user_id:ID!
         user:User!
         post:Post!
+    }
+
+    input CreateCommentInput{
+        text:String!
+        post_id:ID!
+        user_id:ID!
     }
 
     type Query{
@@ -49,10 +64,10 @@ const typeDefs = gql`
     
 
     type Mutation{
-        createUser(fullname:String!): User!
-        createPost(title:String!, user_id:ID!): Post!
+        createUser(data:CreateUserInput!): User!
+        createPost(data:CreatePostInput!): Post!
         
-        createComment(text:String!,post_id:ID!,user_id:ID!):Comment!
+        createComment(data:CreateCommentInput!):Comment!
         
     }
 
@@ -60,10 +75,12 @@ const typeDefs = gql`
 const resolvers = {
 
     Mutation: {
-        createUser: (parent,{fullname}) => {
+        createUser: (parent,{data}) => {
             const user = {
                 id:nanoid(),
-                fullname:fullname,
+                // fullname:data.fullname,
+                //other using 
+                ...data //get all datas 
             }
 
             users.push(user)
@@ -71,11 +88,10 @@ const resolvers = {
 
         },
 
-        createPost: (parent,{title,user_id})=> {
+        createPost: (parent,{data})=> {
             const post = {
                 id:nanoid(),
-                title:title,
-                user_id:user_id
+                ...data
             }
 
             posts.push(post)
@@ -83,12 +99,13 @@ const resolvers = {
             return post
         },
 
-        createComment: (parent,{text,post_id,user_id})=> {
+        createComment: (parent,{data})=> {
             const comment = {
                 id:nanoid(),
-                text, //short using
-                user_id,//short using
-                post_id//short using
+                // text, //short using
+                // user_id,//short using
+                // post_id//short using
+                ...data
             }
 
             comments.push(comment)
