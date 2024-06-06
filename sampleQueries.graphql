@@ -40,6 +40,16 @@ mutation addUser{
   }
 }
 
+mutation updateUser{
+  updateUser(id:"2", data: {
+    fullname:"Aslı Demirci (updated)"
+  }){
+		id,
+    fullname
+  
+}
+}
+
 mutation addComment{
   	createComment(data:{text:"Sample comment 5", post_id:"1",user_id:"1"}){
     id
@@ -49,8 +59,31 @@ mutation addComment{
     }
 }
 
+mutation updateComment{
+  updateComment(id:"1", data:{
+    text:"buketin yorumu -> (comment updated)"
+    post_id:"2"
+  }) {
+    id,
+    text,
+    post_id,
+    user_id
+  }
+}
+
 mutation addPost{
   createPost(data:{title:"Sample Post 6 for Buket", user_id:"1"}){
+    id,
+    title,
+    user_id
+  }
+}
+
+mutation updatePost{
+  updatePost(id:"1",data: {
+    title:"Buketin gönderisi (title updated) (second update:now this is aslı's post)"
+    user_id:"2"
+  }) {
     id,
     title,
     user_id

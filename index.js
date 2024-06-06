@@ -2,157 +2,210 @@ const { ApolloServer, gql } = require("apollo-server");
 const {
   ApolloServerPluginLandingPageGraphQLPlayground,
 } = require("apollo-server-core");
-const { comments,users,posts } = require("./data");
+const { comments, users, posts } = require("./data");
 
-const {nanoid} = require("nanoid")
-
+const { nanoid } = require("nanoid");
 
 const typeDefs = gql`
+  type User {
+    id: ID!
+    fullname: String!
+    posts: [Post!]!
+    comments: [Comment!]!
+  }
 
-    type User{
-        id:ID!
-        fullname:String!
-        posts:[Post!]!
-        comments:[Comment!]!
-    }
+  input CreateUserInput {
+    fullname: String!
+  }
 
-    input CreateUserInput{
-        fullname:String!
-    }
+  input UpdateUserInput {
+    fullname: String
+  }
 
-    type Post{
-        id:ID!
-        title:String!
-        user_id:ID!
-        user:User!
-        comments:[Comment!]!
-    }
+  type Post {
+    id: ID!
+    title: String!
+    user_id: ID!
+    user: User!
+    comments: [Comment!]!
+  }
 
-    input CreatePostInput{
-        title:String!
-        user_id:ID!
-    }
+  input CreatePostInput {
+    title: String!
+    user_id: ID!
+  }
 
-    type Comment{
-        id:ID!
-        text:String!
-        post_id:ID!
-        user_id:ID!
-        user:User!
-        post:Post!
-    }
+  input UpdatePostInput{
+    title:String
+    user_id:ID
+  }
 
-    input CreateCommentInput{
-        text:String!
-        post_id:ID!
-        user_id:ID!
-    }
+  type Comment {
+    id: ID!
+    text: String!
+    post_id: ID!
+    user_id: ID!
+    user: User!
+    post: Post!
+  }
 
-    type Query{
-        users: [User!]!
-        user(id:ID!): User!
+  input CreateCommentInput {
+    text: String!
+    post_id: ID!
+    user_id: ID!
+  }
 
+  input UpdateCommentInput{
+    text:String
+    post_id:ID
+    user_id:ID
+  }
 
-        posts: [Post!]!
-        post(id:ID!): Post!
+  type Query {
+    users: [User!]!
+    user(id: ID!): User!
 
+    posts: [Post!]!
+    post(id: ID!): Post!
 
+    comments: [Comment!]!
+    comment(id: ID!): Comment!
+  }
 
-        comments: [Comment!]!
-        comment(id:ID!): Comment!
-    }
+  type Mutation {
+    createUser(data: CreateUserInput!): User!
+    updateUser(id:ID!,data: UpdateUserInput!): User!
+
+    createPost(data: CreatePostInput!): Post!
+    updatePost(id:ID!,data:UpdatePostInput!): Post!
+
+    createComment(data: CreateCommentInput!): Comment!
+    updateComment(id:ID!, data: UpdateCommentInput!): Comment!
     
-
-    type Mutation{
-        createUser(data:CreateUserInput!): User!
-        createPost(data:CreatePostInput!): Post!
-        
-        createComment(data:CreateCommentInput!):Comment!
-        
-    }
-
+  }
 `;
 const resolvers = {
+  Mutation: {
+    createUser: (parent, { data }) => {
+      const user = {
+        id: nanoid(),
+        // fullname:data.fullname,
+        //other using
+        ...data, //get all datas
+      };
 
-    Mutation: {
-        createUser: (parent,{data}) => {
-            const user = {
-                id:nanoid(),
-                // fullname:data.fullname,
-                //other using 
-                ...data //get all datas 
-            }
+      users.push(user);
+      return user;
+    },
 
-            users.push(user)
-            return user
+    updateUser: (parent, {id,data}) => {
+        const user_index = users.findIndex((user)=> user.id ===id)
 
-        },
-
-        createPost: (parent,{data})=> {
-            const post = {
-                id:nanoid(),
-                ...data
-            }
-
-            posts.push(post)
-
-            return post
-        },
-
-        createComment: (parent,{data})=> {
-            const comment = {
-                id:nanoid(),
-                // text, //short using
-                // user_id,//short using
-                // post_id//short using
-                ...data
-            }
-
-            comments.push(comment)
-            return comment
+        if(user_index === -1){
+            throw new Error("User not found")
         }
 
+        const updated_user = users[user_index] = {
+            ...users[user_index],
+            ...data
+        }
+
+        return updated_user
 
     },
 
+    createPost: (parent, { data }) => {
+      const post = {
+        id: nanoid(),
+        ...data,
+      };
 
-    Query: {
-        users: ()=> users,
-        user: (parent,args) =>  users.find((user)=> user.id === args.id),
+      posts.push(post);
 
-
-        posts: ()=> posts,
-        post: (parent,args) => posts.find((post)=> post.id === args.id),
-
-
-
-        comments:()=> comments,
-        comment: (parent,args) => comments.find((comment)=> comment.id === args.id)
+      return post;
     },
 
-    User:{
-        posts: (parent,args) => posts.filter((post)=> post.user_id ===parent.id),
-        comments:(parent)=> comments.filter((comment)=> comment.user_id === parent.id)
+    updatePost: (parent, {id,data}) => {
+        const post_index = posts.findIndex((post)=> post.id ===id)
+
+        if(post_index ===-1){
+            throw new Error("Post not found")
+        }
+
+        const updated_post = posts[post_index] = {
+            ...posts[post_index],
+            ...data
+        }
+
+        return updated_post
     },
 
-    Post:{
-        user: (parent,args) => users.find((user)=> user.id === parent.user_id),
-        comments: (parent,args) => comments.filter((comment)=> comment.post_id === parent.id)
+    createComment: (parent, { data }) => {
+      const comment = {
+        id: nanoid(),
+        // text, //short using
+        // user_id,//short using
+        // post_id//short using
+        ...data,
+      };
+
+      comments.push(comment);
+      return comment;
     },
-    Comment:{
-        user:(parent,args) => users.find((user)=> user.id === parent.user_id),
-        post:(parent,args)=> posts.find((post)=> post.id ===parent.post_id)
+
+    updateComment: (parent, {id,data}) => {
+        const comment_index = comments.findIndex((comment)=> comment.id === id)
+
+        if(comment_index === -1){
+            throw new Error("Comment not found")
+        }
+
+        const updated_comment = comments[comment_index] = {
+            ...comments[comment_index],
+            ...data
+        }
+
+        return updated_comment
     }
+  },
+
+  Query: {
+    users: () => users,
+    user: (parent, args) => users.find((user) => user.id === args.id),
+
+    posts: () => posts,
+    post: (parent, args) => posts.find((post) => post.id === args.id),
+
+    comments: () => comments,
+    comment: (parent, args) =>
+      comments.find((comment) => comment.id === args.id),
+  },
+
+  User: {
+    posts: (parent, args) => posts.filter((post) => post.user_id === parent.id),
+    comments: (parent) =>
+      comments.filter((comment) => comment.user_id === parent.id),
+  },
+
+  Post: {
+    user: (parent, args) => users.find((user) => user.id === parent.user_id),
+    comments: (parent, args) =>
+      comments.filter((comment) => comment.post_id === parent.id),
+  },
+  Comment: {
+    user: (parent, args) => users.find((user) => user.id === parent.user_id),
+    post: (parent, args) => posts.find((post) => post.id === parent.post_id),
+  },
 };
 
-const server = new ApolloServer({ typeDefs, 
-    resolvers,
-    plugins: [
-        ApolloServerPluginLandingPageGraphQLPlayground({
-            //options
-        })
-    ]
-
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [
+    ApolloServerPluginLandingPageGraphQLPlayground({
+      //options
+    }),
+  ],
 });
 
 server.listen().then(({ url }) => {
