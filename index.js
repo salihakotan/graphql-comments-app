@@ -75,12 +75,15 @@ const typeDefs = gql`
   type Mutation {
     createUser(data: CreateUserInput!): User!
     updateUser(id:ID!,data: UpdateUserInput!): User!
+    deleteUser(id:ID!):User!
 
     createPost(data: CreatePostInput!): Post!
     updatePost(id:ID!,data:UpdatePostInput!): Post!
+    deletePost(id:ID!):Post!
 
     createComment(data: CreateCommentInput!): Comment!
     updateComment(id:ID!, data: UpdateCommentInput!): Comment!
+    deleteComment(id:ID!): Comment!
     
   }
 `;
@@ -114,6 +117,18 @@ const resolvers = {
 
     },
 
+    deleteUser: (parent, {id}) => {
+        const user_index = users.findIndex((user)=> user.id === id)
+
+        if(user_index === -1) {
+            throw new Error("User not found")
+        }
+
+        const deleted_user = users[user_index]
+        users.splice(user_index,1)
+        return deleted_user
+    },
+
     createPost: (parent, { data }) => {
       const post = {
         id: nanoid(),
@@ -138,6 +153,17 @@ const resolvers = {
         }
 
         return updated_post
+    },
+
+    deletePost: (parent, {id}) => {
+        const post_index = posts.findIndex((post)=> post.id === id) 
+        if(post_index === -1) {
+            throw new Error("Post not found")
+        }
+
+        const deleted_post = posts[post_index]
+        posts.splice(post_index,1)
+        return deleted_post
     },
 
     createComment: (parent, { data }) => {
@@ -166,6 +192,16 @@ const resolvers = {
         }
 
         return updated_comment
+    },
+
+    deleteComment: (parent, {id})=> {
+        const comment_index = comments.findIndex((comment)=> comment.id === id)
+        if(comment_index === -1) {
+            throw new Error("Comment not found")
+        }
+        const deleted_comment = comments[comment_index]
+        comments.splice(comment_index,1)
+        return deleted_comment
     }
   },
 

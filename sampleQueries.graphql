@@ -50,6 +50,10 @@ mutation updateUser{
 }
 }
 
+mutation deleteUser {
+  deleteUser(id:"1") {id,fullname}
+}
+
 mutation addComment{
   	createComment(data:{text:"Sample comment 5", post_id:"1",user_id:"1"}){
     id
@@ -71,6 +75,10 @@ mutation updateComment{
   }
 }
 
+mutation deleteComment{
+  deleteComment(id:"1"){id,text,user_id,post_id}
+}
+
 mutation addPost{
   createPost(data:{title:"Sample Post 6 for Buket", user_id:"1"}){
     id,
@@ -88,4 +96,7 @@ mutation updatePost{
     title,
     user_id
   }
+}
+mutation deletePost{
+  deletePost(id:"1"){id,title,user_id}
 }
