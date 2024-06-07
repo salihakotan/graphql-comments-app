@@ -112,3 +112,23 @@ mutation deletePost{
 mutation deleteAllPosts {
   deleteAllPosts{count}
 }
+
+
+# SUBSCRIPTIONS -------------------------------------------------
+
+subscription userCreated {
+  userCreated {
+    id
+    fullname
+  }
+}
+
+subscription userUpdated{userUpdated{id,fullname}}
+
+subscription userDeleted{
+  userDeleted{
+    id,
+    fullname
+  }
+}
+
