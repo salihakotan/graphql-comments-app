@@ -115,7 +115,6 @@ mutation deleteAllPosts {
 
 
 # SUBSCRIPTIONS -------------------------------------------------
-
 subscription userCreated {
   userCreated {
     id
@@ -132,3 +131,35 @@ subscription userDeleted{
   }
 }
 
+subscription postCreated{
+  postCreated{id,title}
+}
+
+subscription postUpdated{
+  postUpdated{id,title}
+}
+subscription postDeleted{
+  postDeleted{id,title}
+}
+
+subscription postCount{
+  postCount
+}
+
+
+
+
+subscription commentCreated{
+  commentCreated{id,text}
+}
+
+subscription commentUpdated{
+  commentUpdated{id,text}
+}
+subscription commentDeleted{
+  commentDeleted{id,text}
+}
+
+subscription commentCount{
+  commentCount
+}

@@ -108,9 +108,23 @@ const yoga = createYoga({
 
       type Subscription {
         countdown: Int! 
+
         userCreated: User!
         userUpdated: User!
         userDeleted:User!
+       
+
+        postCreated:Post!
+        postUpdated:Post!
+        postDeleted:Post!
+        postCount:Int
+
+        commentCreated:Comment!
+        commentUpdated:Comment!
+        commentDeleted:Comment!
+        commentCount:Int
+
+
       }
     `,
     resolvers: {
@@ -135,7 +149,52 @@ const yoga = createYoga({
         },
         userDeleted:{
           subscribe:(_,__)=> pubsub.asyncIterator("userDeleted")
-        }
+        },
+
+        //POSTS
+
+        postCreated: {
+          subscribe: (_, __) => pubsub.asyncIterator("postCreated"),
+        },
+        postUpdated: {
+          subscribe: (_,__)=> pubsub.asyncIterator("postUpdated")
+        },
+        postDeleted:{
+          subscribe:(_,__)=> pubsub.asyncIterator("postDeleted")
+        },
+        postCount:{
+          subscribe:(_,__)=> {
+            setTimeout(() => {
+                pubsub.publish("postCount",{postCount:posts.length})
+            });
+            return pubsub.asyncIterator("postCount")
+          }
+
+        },
+
+
+
+        //COMMENTS
+
+        commentCreated: {
+          subscribe: (_, __) => pubsub.asyncIterator("commentCreated"),
+        },
+        commentUpdated: {
+          subscribe: (_,__)=> pubsub.asyncIterator("commentUpdated")
+        },
+        commentDeleted:{
+          subscribe:(_,__)=> pubsub.asyncIterator("commentDeleted")
+        },
+        commentCount:{
+          subscribe:(_,__)=> {
+            setTimeout(() => {
+                pubsub.publish("commentCount",{commentCount:comments.length})
+            });
+            return pubsub.asyncIterator("commentCount")
+          }
+
+        },
+
       },
 
       Mutation: {
@@ -201,6 +260,10 @@ const yoga = createYoga({
           };
 
           posts.push(post);
+          pubsub.publish("postCreated", {postCreated: post})
+          pubsub.publish("postCount", {postCount: posts.length})
+
+
 
           return post;
         },
@@ -217,6 +280,9 @@ const yoga = createYoga({
             ...data,
           });
 
+          pubsub.publish("postUpdated", {postUpdated: updated_post})
+
+
           return updated_post;
         },
 
@@ -228,12 +294,19 @@ const yoga = createYoga({
 
           const deleted_post = posts[post_index];
           posts.splice(post_index, 1);
+
+          pubsub.publish("postDeleted", {postDeleted: deleted_post})
+          pubsub.publish("postCount", {postCount: posts.length})
+
+
           return deleted_post;
         },
 
         deleteAllPosts: () => {
           const length = posts.length;
           posts.splice(0, length);
+          pubsub.publish("postCount", {postCount: posts.length})
+
           return { count: length };
         },
 
@@ -247,6 +320,11 @@ const yoga = createYoga({
           };
 
           comments.push(comment);
+
+          pubsub.publish("commentCreated", {commentCreated: comment})
+          pubsub.publish("commentCount", {commentCount: comments.length})
+
+
           return comment;
         },
 
@@ -264,6 +342,9 @@ const yoga = createYoga({
             ...data,
           });
 
+          pubsub.publish("commentUpdated", {commentUpdated: updated_comment})
+
+
           return updated_comment;
         },
 
@@ -276,11 +357,20 @@ const yoga = createYoga({
           }
           const deleted_comment = comments[comment_index];
           comments.splice(comment_index, 1);
+
+          pubsub.publish("commentDeleted", {commentDeleted: deleted_comment})
+          pubsub.publish("commentCount", {commentCount: comments.length})
+
+
           return deleted_comment;
         },
         deleteAllComments: () => {
           const length = comments.length;
           comments.splice(0, length);
+
+          pubsub.publish("commentCount", {commentCount: comments.length})
+
+          
           return { count: length };
         },
       },
