@@ -1,0 +1,25 @@
+
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import * as Redis from 'ioredis';
+import dotenv from 'dotenv';
+
+dotenv.config()
+
+const options = {
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password:process.env.REDIS_PASSWORD,
+  retryStrategy: times => {
+    // reconnect after
+    return Math.min(times * 50, 2000);
+  }
+}
+
+
+
+const pubsub = new RedisPubSub({
+  publisher:new Redis.Redis(options),
+  subscriber:new Redis.Redis(options)
+});
+
+export default pubsub

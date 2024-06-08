@@ -16,9 +16,13 @@
   "dependencies": {
     "@apollo/server": "^4.10.4",
     "apollo-server-core": "^3.13.0",
+    "dotenv": "^16.4.5",
     "graphql": "^16.8.1",
+    "graphql-redis-subscriptions": "^2.6.1",
     "graphql-subscriptions": "^2.0.0",
     "graphql-yoga": "^5.3.1",
-    "nanoid": "^3.3.4"
+    "ioredis": "^5.4.1",
+    "nanoid": "^3.3.4",
+    "redis": "^4.6.14"
   }
 }

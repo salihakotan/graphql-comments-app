@@ -6,15 +6,17 @@ import { createServer } from "node:http";
 import { createSchema, createYoga } from "graphql-yoga";
 // import { createPubSub } from 'graphql-yoga';
 
-import { PubSub, withFilter } from "graphql-subscriptions";
+import { withFilter } from "graphql-subscriptions";
 
 import { comments, users, posts } from "./data.js";
 
 import { nanoid } from "nanoid";
-import { subscribe } from "node:diagnostics_channel";
 
-// const pubsub = createPubSub()
-const pubsub = new PubSub();
+import pubsub from "./pubsub.js";
+
+
+// // const pubsub = createPubSub()
+// const pubsub = new PubSub();
 
 const yoga = createYoga({
   graphqlEndpoint: "/",
