@@ -132,7 +132,7 @@ subscription userDeleted{
 }
 
 subscription postCreated{
-  postCreated{id,title}
+  postCreated(user_id:"1"){id,title}
 }
 
 subscription postUpdated{
@@ -150,7 +150,7 @@ subscription postCount{
 
 
 subscription commentCreated{
-  commentCreated{id,text}
+  commentCreated(post_id:"1"){id,text}
 }
 
 subscription commentUpdated{

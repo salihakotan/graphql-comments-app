@@ -6,7 +6,7 @@ import { createServer } from "node:http";
 import { createSchema, createYoga } from "graphql-yoga";
 // import { createPubSub } from 'graphql-yoga';
 
-import { PubSub } from "graphql-subscriptions";
+import { PubSub, withFilter } from "graphql-subscriptions";
 
 import { comments, users, posts } from "./data.js";
 
@@ -114,12 +114,12 @@ const yoga = createYoga({
         userDeleted:User!
        
 
-        postCreated:Post!
+        postCreated(user_id:ID):Post!
         postUpdated:Post!
         postDeleted:Post!
         postCount:Int
 
-        commentCreated:Comment!
+        commentCreated(post_id:ID):Comment!
         commentUpdated:Comment!
         commentDeleted:Comment!
         commentCount:Int
@@ -154,7 +154,12 @@ const yoga = createYoga({
         //POSTS
 
         postCreated: {
-          subscribe: (_, __) => pubsub.asyncIterator("postCreated"),
+          subscribe: withFilter(
+            (_, __) => pubsub.asyncIterator("postCreated"),
+            (payload,variables) => {
+              return variables.user_id ? payload.postCreated.user_id === variables.user_id : true
+            }
+          )
         },
         postUpdated: {
           subscribe: (_,__)=> pubsub.asyncIterator("postUpdated")
@@ -177,7 +182,12 @@ const yoga = createYoga({
         //COMMENTS
 
         commentCreated: {
-          subscribe: (_, __) => pubsub.asyncIterator("commentCreated"),
+          subscribe: withFilter(
+            (_, __) => pubsub.asyncIterator("commentCreated"),
+            (payload,variables)=> {
+              return variables.post_id ? payload.commentCreated.post_id === variables.post_id : true
+            }
+          )
         },
         commentUpdated: {
           subscribe: (_,__)=> pubsub.asyncIterator("commentUpdated")
@@ -370,7 +380,7 @@ const yoga = createYoga({
 
           pubsub.publish("commentCount", {commentCount: comments.length})
 
-          
+
           return { count: length };
         },
       },
