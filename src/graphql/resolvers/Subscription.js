@@ -1,6 +1,5 @@
-const { withFilter  } = require('graphql-subscriptions');
-
-const Subscription={
+import { withFilter } from "graphql-subscriptions";
+export const Subscription={
     
     userCreated: {
       subscribe: (_, __,{pubsub}) => pubsub.asyncIterator("userCreated"),
@@ -68,4 +67,3 @@ const Subscription={
 
   }
 
-  module.exports.Subscription = Subscription

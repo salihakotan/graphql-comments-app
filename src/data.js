@@ -19,4 +19,4 @@ const db = {
   comments,
 };
 
-module.exports = {db}
+export {db}

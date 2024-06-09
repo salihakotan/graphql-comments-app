@@ -1,7 +1,6 @@
-
-const { RedisPubSub  } = require('graphql-redis-subscriptions');;
-const Redis = require('ioredis');;
-const dotenv = require('dotenv');;
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import Redis from 'ioredis';
+import dotenv from "dotenv"
 
 dotenv.config()
 
@@ -22,4 +21,4 @@ const pubsub = new RedisPubSub({
   subscriber:new Redis.Redis(options)
 });
 
-module.exports = {pubsub}
+export {pubsub}

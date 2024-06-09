@@ -1,4 +1,4 @@
-const Query={
+export const Query={
     users: (_,__,{db}) => db.users,
     user: (parent, args, {db}) => db.users.find((user) => user.id === args.id),
 
@@ -9,5 +9,4 @@ const Query={
     comment: (parent, args,{db}) =>
       db.comments.find((comment) => comment.id === args.id),
   }
-
-  module.exports.Query = Query
+  
