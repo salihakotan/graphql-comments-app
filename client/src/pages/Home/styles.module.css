@@ -1,0 +1,7 @@
+.listItemDesc{
+    color: rgba(98, 98, 98, 0.8);
+}
+
+.listItemDesc:hover{
+    color: rgb(56, 56, 56,1);
+}

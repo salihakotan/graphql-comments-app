@@ -3,7 +3,8 @@ import { useQuery } from '@apollo/client';
 import { Avatar, List } from 'antd';
 import Loading from 'components/Loading';
 import { GET_POSTS } from './queries';
-
+import { Link } from 'react-router-dom';
+import styles from "./styles.module.css"
 
 
 
@@ -37,8 +38,8 @@ function Home() {
         <List.Item>
             <List.Item.Meta
               avatar={<Avatar src={item.user.profile_photo} />}
-              title={<a href="https://ant.design">{item.title}</a>}
-              description={item.description}
+              title={<Link to={`/post/${item.id}`}>{item.title}</Link>}
+              description={<Link className={styles.listItemDesc} to={`/post/${item.id}`}>{item.short_description}</Link>}
             />
         </List.Item>
       )}

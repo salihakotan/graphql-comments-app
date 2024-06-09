@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import { ApolloProvider } from '@apollo/client';
+import 'antd/dist/antd.css';
 
 import client from './apollo';
 

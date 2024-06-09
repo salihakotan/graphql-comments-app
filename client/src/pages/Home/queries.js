@@ -7,6 +7,7 @@ query getAllPosts{
     id,
     title,
     description,
+    short_description,
     user{
       profile_photo
     }
