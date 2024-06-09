@@ -1,25 +1,25 @@
 type User {
   id: ID!
   fullname: String!
+  profile_photo: String
   posts: [Post!]!
   comments: [Comment!]!
 }
 
 input CreateUserInput {
   fullname: String!
+  profile_photo: String
 }
 
 input UpdateUserInput {
   fullname: String
+  profile_photo: String
 }
 
 type Query {
   users: [User!]!
   user(id: ID!): User!
 }
-
-
-
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
@@ -33,4 +33,3 @@ type Subscription {
   userUpdated: User!
   userDeleted: User!
 }
-

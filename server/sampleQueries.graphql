@@ -14,7 +14,9 @@ query users{
 
 query getAllUsers{
   users{
+    id
   fullname
+  profile_photo
   }
 }
 
@@ -27,6 +29,7 @@ query getAllComments{
 query getAllPosts{
   posts{
   title
+  description
   }
 }
 
