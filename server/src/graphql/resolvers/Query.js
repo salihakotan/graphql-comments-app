@@ -8,5 +8,7 @@ export const Query={
     comments:  (_,__,{db}) => db.comments,
     comment: (parent, args,{db}) =>
       db.comments.find((comment) => comment.id === args.id),
+
+    postCount: (_,__,{db}) => db.posts.length
   }
   

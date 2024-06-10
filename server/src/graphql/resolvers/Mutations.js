@@ -62,7 +62,7 @@ export const Mutation={
         ...data,
       };
 
-      db.posts.push(post);
+      db.posts.unshift(post);
       pubsub.publish("postCreated", {postCreated: post})
       pubsub.publish("postCount", {postCount: db.posts.length})
 
@@ -122,7 +122,7 @@ export const Mutation={
         ...data,
       };
 
-      db.comments.push(comment);
+      db.comments.unshift(comment);
 
       pubsub.publish("commentCreated", {commentCreated: comment})
       pubsub.publish("commentCount", {commentCount: db.comments.length})

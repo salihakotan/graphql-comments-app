@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_POSTS = gql`
-  query getAllPosts {
-    posts {
+
+ const postFragment = gql`
+    fragment PostFragment on Post {
       id
       title
       description
@@ -11,19 +11,23 @@ export const GET_POSTS = gql`
         profile_photo
       }
     }
+  `
+
+
+export const GET_POSTS = gql`
+  query getAllPosts {
+    posts {
+      ...PostFragment
+    }
   }
+  ${postFragment}
 `;
 
 export const POSTS_SUBSCRIPTION = gql`
   subscription {
     postCreated {
-      id
-      title
-      description
-      short_description
-      user {
-        profile_photo
-      }
+      ...PostFragment
     }
   }
+  ${postFragment}
 `;

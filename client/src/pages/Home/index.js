@@ -18,12 +18,17 @@ function Home() {
 
 
   useEffect(()=> {
-    console.log("useffect")
     subscribeToMore({
       document:POSTS_SUBSCRIPTION,
       updateQuery: (prev, {subscriptionData})=> {
-        console.log("prev",prev)
-        console.log("data",subscriptionData)
+        if(!subscriptionData.data) return prev;
+
+        return {
+          posts:[
+            subscriptionData.data.postCreated,
+            ...prev.posts, 
+          ]
+        }
       }
     })
   },[subscribeToMore])

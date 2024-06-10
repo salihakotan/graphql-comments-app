@@ -6,3 +6,16 @@ body {
   background-color: #e60086 !important;
 }
 
+
+.ant-menu-item-selected a{
+  color:white!important;
+}
+
+.ant-menu-item-selected .ant-menu-title-content a:hover{
+  color:white!important;
+}
+
+
+.ant-menu-title-content a:hover{
+  color: #e60086!important;
+}

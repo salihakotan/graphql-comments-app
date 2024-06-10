@@ -14,13 +14,35 @@ query post($id:ID!){
 }
 `
 
+const commentFragment = gql`
+    fragment CommentFragment on Comment {
+      id
+      text
+      user{id,fullname,profile_photo}
+    }
+`
+
+
 
 export const GET_POST_COMMENTS = gql`
 query getComments($id:ID!){
   post(id:$id){
-    comments{id,text
-    user{id,fullname,profile_photo}
+    comments {
+      ...CommentFragment
     }
+   
   }
 }
+${commentFragment}
+`
+
+export const COMMENTS_SUBSCRIPTIONS =gql`
+  subscription ($post_id:ID){
+    commentCreated(post_id:$post_id){
+      ...CommentFragment
+    }
+  }
+
+  ${commentFragment}
+
 `

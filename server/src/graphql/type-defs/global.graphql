@@ -2,3 +2,8 @@
 type DeleteAllOutput{
   count: Int!
 }
+
+type Query {
+  postCount:Int
+ 
+}

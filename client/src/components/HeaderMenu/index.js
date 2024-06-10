@@ -1,13 +1,13 @@
 import { Menu } from "antd";
-import styles from "./styles.module.css"
 import { Link,useLocation } from "react-router-dom";
+import styles from "./styles.module.css"
 
 function HeaderMenu() {
 
     const location = useLocation
 
   return (
-    <Menu theme="dark" selectedKeys={location.pathname} className={styles.headerMenu} mode="horizontal">
+    <Menu selectedKeys={location.pathname} className={styles.headerMenu} mode="horizontal">
         <Menu.Item key="/" className={styles.menuItem}>
             <Link to="/">Home</Link>
         </Menu.Item>
