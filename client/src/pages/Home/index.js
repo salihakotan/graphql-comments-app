@@ -2,9 +2,10 @@
 import { useQuery } from '@apollo/client';
 import { Avatar, List } from 'antd';
 import Loading from 'components/Loading';
-import { GET_POSTS } from './queries';
+import { GET_POSTS, POSTS_SUBSCRIPTION } from './queries';
 import { Link } from 'react-router-dom';
 import styles from "./styles.module.css"
+import { useEffect } from 'react';
 
 
 
@@ -12,8 +13,20 @@ import styles from "./styles.module.css"
 function Home() {
 
 
-  const {loading,error,data} = useQuery(GET_POSTS)
+  const {loading,error,data,subscribeToMore} = useQuery(GET_POSTS)
 
+
+
+  useEffect(()=> {
+    console.log("useffect")
+    subscribeToMore({
+      document:POSTS_SUBSCRIPTION,
+      updateQuery: (prev, {subscriptionData})=> {
+        console.log("prev",prev)
+        console.log("data",subscriptionData)
+      }
+    })
+  },[subscribeToMore])
 
   if(loading){
     return <Loading/>
@@ -24,7 +37,6 @@ function Home() {
     return <div>Error {error.message}</div>
   }
 
-  console.log(data)
 
   return (
     <div>

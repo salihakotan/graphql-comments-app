@@ -12,7 +12,7 @@ import {
 import { ApolloProvider } from '@apollo/client';
 import 'antd/dist/antd.css';
 
-import client from './apollo';
+import client from 'apollo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
