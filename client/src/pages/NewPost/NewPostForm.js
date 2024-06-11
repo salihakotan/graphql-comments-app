@@ -1,16 +1,23 @@
 import React from 'react'
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Checkbox, Form, Input, Select, message } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { Option } from 'antd/lib/mentions';
-import { useQuery } from '@apollo/client';
-import { GET_USERS } from './queries';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_USERS, NEW_POST_MUTATION } from './queries';
 
 import styles from "./styles.module.css"
+
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 function NewPostForm() {
+
+
+  const navigate = useNavigate()
+
+  const [savePost, {loading,data}] = useMutation(NEW_POST_MUTATION)
 
 
   const {loading:usersLoading, data:usersData} = useQuery(GET_USERS)
@@ -20,8 +27,26 @@ function NewPostForm() {
   const [form] = Form.useForm();
 
 
-  const onFinish = (values) => {
+  const onFinish = async(values) => {
     console.log("Success:", values);
+
+    try {
+      await savePost({
+        variables:{
+          data: values
+        }
+      })
+
+
+      message.success("Post saved",4)
+
+      navigate("/")
+
+
+    } catch (error) {
+        message.error("post not saved: ", 6)
+    }
+
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -76,7 +101,7 @@ function NewPostForm() {
             },
           ]}
         >
-          <Input placeholder='Enter title' />
+          <Input disabled={loading} placeholder='Enter title' />
         </Form.Item>
 
         <Form.Item
@@ -88,7 +113,7 @@ function NewPostForm() {
             },
           ]}
         >
-          <Input placeholder='Enter shor description' />
+          <Input disabled={loading} placeholder='Enter shor description' />
         </Form.Item>
 
         <Form.Item
@@ -100,7 +125,7 @@ function NewPostForm() {
             },
           ]}
         >
-          <TextArea rows={4} placeholder='Enter description' />
+          <TextArea disabled={loading} rows={4} placeholder='Enter description' />
         </Form.Item>
 
         <Form.Item
@@ -112,12 +137,12 @@ function NewPostForm() {
             },
           ]}
         >
-          <Input placeholder='Enter cover image link' />
+          <Input disabled={loading} placeholder='Enter cover image link' />
         </Form.Item>
 
        
         <Form.Item
-        name="user"
+        name="user_id"
         rules={[
           {
             required: true,
@@ -126,7 +151,7 @@ function NewPostForm() {
       >
         <Select
         loading={usersLoading}
-        disabled={usersLoading}
+        disabled={usersLoading || loading}
           placeholder="Select a user"
           onChange={onGenderChange}
           allowClear
@@ -144,7 +169,7 @@ function NewPostForm() {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button loading={loading} type="primary" htmlType="submit">
             Add post
           </Button>
         </Form.Item>
