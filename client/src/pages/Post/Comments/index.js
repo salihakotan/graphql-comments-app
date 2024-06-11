@@ -75,7 +75,7 @@ function Comments({ post_id }) {
         />
 
             <Divider>New Comment</Divider>
-        <NewCommentForm/>
+        <NewCommentForm post_id={post_id} />
 
 
         </>

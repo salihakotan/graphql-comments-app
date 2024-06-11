@@ -7,7 +7,7 @@ import styles from "./styles.module.css"
 function Loading() {
   return (
     <div className={styles.loading}>
-        <Spin
+        <Spin delay={300}
     indicator={
       <LoadingOutlined
         style={{

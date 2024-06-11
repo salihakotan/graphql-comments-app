@@ -3,33 +3,45 @@ import TextArea from "antd/lib/input/TextArea";
 import { Option } from "antd/lib/mentions";
 import styles from "./styles.module.css"
 
-import React from "react";
-import { useQuery } from "@apollo/client";
-import { GET_USERS } from "./queries";
+import React, { useRef } from "react";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_USERS, NEW_COMMENT_MUTATION } from "./queries";
 
-function NewCommentForm() {
+function NewCommentForm({post_id}) {
 
+  const formRef = useRef()
 
   const {loading:usersLoading, data:usersData} = useQuery(GET_USERS)
 
+  const [saveComment, {loading,data,error}] = useMutation(NEW_COMMENT_MUTATION)
+
 
   const onFinish = async (values) => {
-    console.log("success", values);
-
+    
     try {
 
+      await saveComment({
+        variables:{
+          data:{
+            ...values,
+            post_id
+          }
+        }
+      })
 
-      message.success("Comment saved")
+      message.success("Comment saved",4)
+      formRef.current.resetFields()
 
 
     } catch (error) {
-      message.error("Comment not saved")
+      message.error("Comment not saved",4)
+      console.log(error.message)
     }
   };
 
   return (
     <div>
-      <Form name="customized_form_controls" layout="block" onFinish={onFinish}>
+      <Form name="customized_form_controls" layout="block" onFinish={onFinish} ref={formRef}>
         <Form.Item
          wrapperCol={{
             offset: 0,
@@ -43,6 +55,7 @@ function NewCommentForm() {
           ]}
         >
           <Select 
+          disabled={usersLoading || loading}
           loading={usersLoading}
             placeholder="Select a user"
            
@@ -61,7 +74,7 @@ function NewCommentForm() {
             span: 16,
           }}
         >
-          <TextArea placeholder="Enter a comment" rows={4} />
+          <TextArea disabled={loading} placeholder="Enter a comment" rows={4} />
         </Form.Item>
 
         <Form.Item
@@ -71,7 +84,7 @@ function NewCommentForm() {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button loading={loading} type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
