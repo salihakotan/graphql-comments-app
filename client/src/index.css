@@ -19,3 +19,7 @@ body {
 .ant-menu-title-content a:hover{
   color: #e60086!important;
 }
+
+.ant-form-item {
+  margin-bottom: 14px!important
+}

@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import NewPostForm from "./NewPostForm";
+
+import Title from "antd/lib/typography/Title";
+
 
 function NewPost() {
   return (
-    <div>NewPost</div>
-  )
+    <div>
+      <Title level={3}>New Post</Title>
+
+      <NewPostForm/>
+    </div>
+  );
 }
 
-export default NewPost
+export default NewPost;

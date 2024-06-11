@@ -1,0 +1,9 @@
+.buttonFormItem{
+    text-align: right;
+}
+
+.buttonFormItem Button{
+    background-color: #ff43a7;
+    border: none;
+    border-radius: 5px;
+}
