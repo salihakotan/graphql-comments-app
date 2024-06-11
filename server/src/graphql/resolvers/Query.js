@@ -4,11 +4,12 @@ export const Query={
 
     posts: (_,__,{db}) => db.posts,
     post: (parent, args,{db}) => db.posts.find((post) => post.id === args.id),
+    postCount: (_,__,{db}) => db.posts.length,
+
 
     comments:  (_,__,{db}) => db.comments,
     comment: (parent, args,{db}) =>
       db.comments.find((comment) => comment.id === args.id),
 
-    postCount: (_,__,{db}) => db.posts.length
   }
   

@@ -3,8 +3,7 @@ import styles from "./styles.module.css";
 import { Avatar, Badge } from "antd";
 import { useQuery } from "@apollo/client";
 import { GET_POST_COUNT, POST_COUNT_SUBSCRIPTION } from "./queries";
-// import { GET_POST_COUNT, POST_COUNT_SUBSCRIPTION } from "./queries";
-// import Loading from "components/Loading";
+
 
 function PostCounter() {
 
@@ -21,20 +20,11 @@ function PostCounter() {
       subscribeToMore({
         document:POST_COUNT_SUBSCRIPTION,
         updateQuery: (prev, {subscriptionData})=> {
-
-
-        //   console.log("prev",prev)
-        //   console.log("SUBDATA",subscriptionData)
-
-
-            // console.log("subs data", subscriptionData)
-        //   if(!subscriptionData.data) return prev;
+         
+          if(!subscriptionData.data) return prev.postCount;
   
-          return {
-            posts:[
-            subscriptionData.data.postCount,
-           
-          ]
+          return{
+            postCount:subscriptionData.data.postCount
           }
         }
       })
