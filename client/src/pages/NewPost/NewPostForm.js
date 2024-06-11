@@ -157,7 +157,7 @@ function NewPostForm() {
           allowClear
         >
          {
-          usersData && usersData.users.map((user)=>  <Option key={user.id} value={user.id}>{user.fullname}</Option>)
+          usersData && usersData.users.map((user)=>  <Select.Option key={user.id} value={user.id}>{user.fullname}</Select.Option>)
          }
         </Select>
       </Form.Item>

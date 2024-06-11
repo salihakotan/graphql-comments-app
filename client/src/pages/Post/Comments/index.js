@@ -2,8 +2,9 @@ import { Button, Divider } from "antd";
 import React, { useEffect } from "react";
 import styles from "./styles.module.css";
 import { useLazyQuery } from "@apollo/client";
-import { COMMENTS_SUBSCRIPTIONS, GET_POST_COMMENTS } from "./queries";
+import { COMMENTS_SUBSCRIPTIONS, GET_POST_COMMENTS } from "../queries";
 import { Comment, List } from "antd";
+import NewCommentForm from "./NewCommentForm";
 
 
 function Comments({ post_id }) {
@@ -55,6 +56,8 @@ function Comments({ post_id }) {
         )} 
       </div>
       {!loading && data && (
+        <>
+
         <List
           className="comment-list"
           header={`${data.post.comments.length} replies`}
@@ -70,6 +73,12 @@ function Comments({ post_id }) {
             </li>
           )}
         />
+
+            <Divider>New Comment</Divider>
+        <NewCommentForm/>
+
+
+        </>
       )}
     </>
   );
