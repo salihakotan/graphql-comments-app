@@ -1,22 +1,22 @@
 type Comment {
   id: ID!
   text: String!
-  post_id: ID!
-  user_id: ID!
+  # post_id: ID!
+  # user_id: ID!
   user: User!
   post: Post!
 }
 
 input CreateCommentInput {
   text: String!
-  post_id: ID!
-  user_id: ID!
+  post: ID!
+  user: ID!
 }
 
 input UpdateCommentInput {
   text: String
-  post_id: ID
-  user_id: ID
+  post: ID
+  user: ID
 }
 
 type Query {
