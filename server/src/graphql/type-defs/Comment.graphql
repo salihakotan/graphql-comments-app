@@ -1,5 +1,5 @@
 type Comment {
-  id: ID!
+  _id: ID!
   text: String!
   # post_id: ID!
   # user_id: ID!

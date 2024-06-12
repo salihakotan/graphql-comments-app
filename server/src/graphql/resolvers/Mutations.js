@@ -119,11 +119,10 @@ export const Mutation={
      
       const delete_posts = await _db.Post.deleteMany({})
 
-      const postCount = delete_posts.deletedCount
 
-      pubsub.publish("postCount", {postCount})
+      pubsub.publish("postCount", {postCount:0})
 
-      return { count: postCount };
+      return { count: delete_posts.deletedCount };
     },
 
     createComment: async(parent, { data }, {pubsub,_db}) => {
@@ -192,7 +191,7 @@ export const Mutation={
       const commentCount = delete_comments.deletedCount
 
 
-      pubsub.publish("commentCount", {commentCount})
+      pubsub.publish("commentCount", {commentCount:0})
 
 
       return { count: commentCount };
