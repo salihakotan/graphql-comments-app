@@ -21,7 +21,7 @@ function Home() {
     subscribeToMore({
       document:POSTS_SUBSCRIPTION,
       updateQuery: (prev, {subscriptionData})=> {
-        if(!subscriptionData.data) return prev;
+        if(!subscriptionData.data) return prev.posts;
 
         return {
           posts:[

@@ -1,60 +1,52 @@
-
-
-// const yoga = createYoga({
-//   graphqlEndpoint: "/",
-
-//   schema: createSchema({
-//     typeDefs,
-//     resolvers,
-//   }),
-//   context: { db, pubsub },
-// });
-
-// const server = createServer(yoga);
-// server.listen(4000, () => {
-//   console.info("Server is running on http://localhost:4000/");
-// });
-
-
-
-
 import { pubsub } from "./pubsub";
 
 import resolvers from "@resolvers";
 
-import { db } from "./data";
+//mongodb
+import db from "./db";
+
+//fake data
+import { db as data } from "./data";
 
 import typeDefs from "@type-defs";
 
+import { createServer } from "node:http";
+import { createYoga, createSchema } from "graphql-yoga";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 
+db();
 
-import { createServer } from 'node:http'
-import { createYoga,createSchema } from 'graphql-yoga'
-import { WebSocketServer } from 'ws'
-import { useServer } from 'graphql-ws/lib/use/ws'
- 
+import User from "./models/User";
+
 const yogaApp = createYoga({
   graphiql: {
     // Use WebSockets in GraphiQL
-    subscriptionsProtocol: 'WS',
+    subscriptionsProtocol: "WS",
   },
-    graphqlEndpoint: "/",
+  graphqlEndpoint: "/",
 
   schema: createSchema({
     typeDefs,
     resolvers,
   }),
-  context: { db, pubsub },
-})
- 
+  context: {
+    db: data,
+    pubsub,
+    _db: {
+      User,
+    },
+  },
+});
+
 // Get NodeJS Server from Yoga
-const httpServer = createServer(yogaApp)
+const httpServer = createServer(yogaApp);
 // Create WebSocket server instance from our Node server
 const wsServer = new WebSocketServer({
   server: httpServer,
-  path: yogaApp.graphqlEndpoint
-})
- 
+  path: yogaApp.graphqlEndpoint,
+});
+
 // Integrate Yoga's Envelop instance and NodeJS server with graphql-ws
 useServer(
   {
@@ -66,9 +58,9 @@ useServer(
           ...ctx,
           req: ctx.extra.request,
           socket: ctx.extra.socket,
-          params: msg.payload
-        })
- 
+          params: msg.payload,
+        });
+
       const args = {
         schema,
         operationName: msg.payload.operationName,
@@ -77,18 +69,18 @@ useServer(
         contextValue: await contextFactory(),
         rootValue: {
           execute,
-          subscribe
-        }
-      }
- 
-      const errors = validate(args.schema, args.document)
-      if (errors.length) return errors
-      return args
-    }
+          subscribe,
+        },
+      };
+
+      const errors = validate(args.schema, args.document);
+      if (errors.length) return errors;
+      return args;
+    },
   },
   wsServer
-)
- 
+);
+
 httpServer.listen(4000, () => {
-  console.log('Server is running on port 4000')
-})
+  console.log("Server is running on port 4000");
+});

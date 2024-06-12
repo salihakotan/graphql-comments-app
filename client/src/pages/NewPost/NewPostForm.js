@@ -17,14 +17,13 @@ function NewPostForm() {
 
   const navigate = useNavigate()
 
-  const [savePost, {loading,data}] = useMutation(NEW_POST_MUTATION)
+  const [savePost, {loading}] = useMutation(NEW_POST_MUTATION)
 
 
   const {loading:usersLoading, data:usersData} = useQuery(GET_USERS)
 
   console.log(usersData)
 
-  const [form] = Form.useForm();
 
 
   const onFinish = async(values) => {
@@ -53,26 +52,6 @@ function NewPostForm() {
   };
   
   
-  const onGenderChange = (value) => {
-    switch (value) {
-      case 'male':
-        form.setFieldsValue({
-          note: 'Hi, man!',
-        });
-        break;
-      case 'female':
-        form.setFieldsValue({
-          note: 'Hi, lady!',
-        });
-        break;
-      case 'other':
-        form.setFieldsValue({
-          note: 'Hi there!',
-        });
-        break;
-      default:
-    }
-  };
   
   return (
     <div>
@@ -153,7 +132,6 @@ function NewPostForm() {
         loading={usersLoading}
         disabled={usersLoading || loading}
           placeholder="Select a user"
-          onChange={onGenderChange}
           allowClear
         >
          {
