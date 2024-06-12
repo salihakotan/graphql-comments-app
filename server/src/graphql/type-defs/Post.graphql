@@ -3,8 +3,6 @@ type Post {
   title: String!
   description: String
   short_description: String
-
-  user_id: ID!
   user: User!
   comments: [Comment!]!
   cover: String

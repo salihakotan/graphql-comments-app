@@ -1,7 +1,5 @@
 export const Post={
-    user: (parent, args,{db}) =>
-      db.users.find((user) => user.id === parent.user_id),
-    comments: (parent, args,{db}) =>
-      db.comments.filter((comment) => comment.post_id === parent.id),
+    user: async(parent, args,{_db}) => await _db.User.findById(parent.user),
+    comments: async(parent, args,{_db}) => await _db.Comment.find({post:parent.id}),
   }
 

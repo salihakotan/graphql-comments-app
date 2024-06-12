@@ -18,6 +18,9 @@ import { useServer } from "graphql-ws/lib/use/ws";
 db();
 
 import User from "./models/User";
+import Post from "./models/Post";
+import Comment from "./models/Comment";
+
 
 const yogaApp = createYoga({
   graphiql: {
@@ -35,6 +38,8 @@ const yogaApp = createYoga({
     pubsub,
     _db: {
       User,
+      Post,
+      Comment,
     },
   },
 });

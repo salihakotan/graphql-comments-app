@@ -6,7 +6,15 @@ const UserSchema = new Schema({
         type:String,
         required:true
     },
-    profile_photo: String
+    profile_photo: String,
+    posts:[{
+        type:Schema.Types.ObjectId,
+        ref:"Post"
+    }],
+    comments:[{
+        type:Schema.Types.ObjectId,
+        ref:"Comment"
+    }]
 })
 
 
