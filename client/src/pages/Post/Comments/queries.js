@@ -4,7 +4,7 @@ export const GET_USERS = gql`
 
     query getAllUsers{
         users{
-            id
+            _id
             fullname
         }
     }
@@ -14,10 +14,10 @@ export const GET_USERS = gql`
 export const NEW_COMMENT_MUTATION =gql`
 mutation addComment($data: CreateCommentInput!){
   	createComment(data:$data){
-    id
+    _id
       text,
-      post_id
-      user_id
+    #   post{_id}
+    #   user{_id}
     }
 }
 `

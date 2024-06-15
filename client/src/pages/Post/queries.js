@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_POST = gql`
 query post($id:ID!){
   post(id:$id){
-    id,
+    _id,
     title,
     description,
    cover,
@@ -16,9 +16,9 @@ query post($id:ID!){
 
 const commentFragment = gql`
     fragment CommentFragment on Comment {
-      id
+      _id
       text
-      user{id,fullname,profile_photo}
+      user{_id,fullname,profile_photo}
     }
 `
 

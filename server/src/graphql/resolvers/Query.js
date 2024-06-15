@@ -10,7 +10,7 @@ export const Query={
     },
 
     posts: async(_,__,{_db}) => {
-      const posts = await _db.Post.find()
+      const posts = await _db.Post.find().sort({_id:-1})
       return posts
     },
     post: async(parent, args,{_db}) => {

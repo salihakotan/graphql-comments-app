@@ -24,7 +24,7 @@ function NewCommentForm({post_id}) {
         variables:{
           data:{
             ...values,
-            post_id
+            post:post_id
           }
         }
       })
@@ -47,7 +47,7 @@ function NewCommentForm({post_id}) {
             offset: 0,
             span: 10,
           }}
-          name="user_id"
+          name="user"
           rules={[
             {
               // validator: checkPrice,
@@ -61,7 +61,7 @@ function NewCommentForm({post_id}) {
            
           >
             {
-              usersData && usersData.users.map((user)=> <Select.Option key={user.id} value={user.id}>{user.fullname}</Select.Option>)
+              usersData && usersData.users.map((user)=> <Select.Option key={user._id} value={user._id}>{user.fullname}</Select.Option>)
             }
             
           </Select>

@@ -4,7 +4,7 @@ export const GET_USERS =gql`
 
     query getAllUsers {
         users{
-            id,
+            _id,
             fullname
         }
     }
@@ -15,9 +15,9 @@ export const NEW_POST_MUTATION = gql`
 
 mutation addPost($data: CreatePostInput!){
   createPost(data:$data){
-    id,
+    _id,
     title,
-    user_id
+    # user{_id}
   }
 }
 `

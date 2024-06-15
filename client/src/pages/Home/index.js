@@ -21,6 +21,12 @@ function Home() {
     subscribeToMore({
       document:POSTS_SUBSCRIPTION,
       updateQuery: (prev, {subscriptionData})=> {
+
+
+        console.log("prev",prev.posts)
+        console.log("subda",subscriptionData)
+
+
         if(!subscriptionData.data) return prev.posts;
 
         return {
@@ -55,8 +61,8 @@ function Home() {
         <List.Item>
             <List.Item.Meta
               avatar={<Avatar src={item.user.profile_photo} />}
-              title={<Link to={`/post/${item.id}`}>{item.title}</Link>}
-              description={<Link className={styles.listItemDesc} to={`/post/${item.id}`}>{item.short_description}</Link>}
+              title={<Link to={`/post/${item._id}`}>{item.title}</Link>}
+              description={<Link className={styles.listItemDesc} to={`/post/${item._id}`}>{item.short_description}</Link>}
             />
         </List.Item>
       )}
